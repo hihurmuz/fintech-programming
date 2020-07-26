@@ -3,7 +3,7 @@
 
     <div class="uk-section">
       <div class="uk-container uk-container-large">
-        <h1>FınTech Programmıng</h1>
+        <h1>FINTECH PROGRAMMING</h1>
 
         <Articles :articles="articles"></Articles>
 

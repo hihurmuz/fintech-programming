@@ -2,22 +2,19 @@
   {
     "name": "articles-id",
     "path": "/articles/:id?",
-    "component": "C:\\\\Users\\\\cemak\\\\OneDrive\\\\Masaüstü\\\\Programlar\\\\blog\\\\client\\\\pages\\\\articles\\\\_id.vue",
-    "chunkName": "pages/articles/_id",
-    "_name": "_ba90a654"
+    "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\articles\\\\_id.vue",
+    "chunkName": "pages/articles/_id"
   },
   {
     "name": "categories-id",
     "path": "/categories/:id?",
-    "component": "C:\\\\Users\\\\cemak\\\\OneDrive\\\\Masaüstü\\\\Programlar\\\\blog\\\\client\\\\pages\\\\categories\\\\_id.vue",
-    "chunkName": "pages/categories/_id",
-    "_name": "_3e12ff97"
+    "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\categories\\\\_id.vue",
+    "chunkName": "pages/categories/_id"
   },
   {
     "name": "index",
     "path": "/",
-    "component": "C:\\\\Users\\\\cemak\\\\OneDrive\\\\Masaüstü\\\\Programlar\\\\blog\\\\client\\\\pages\\\\index.vue",
-    "chunkName": "pages/index",
-    "_name": "_21343bea"
+    "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\index.vue",
+    "chunkName": "pages/index"
   }
 ]
