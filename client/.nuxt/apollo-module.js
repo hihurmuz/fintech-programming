@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import VueApollo from 'vue-apollo'
-import 'isomorphic-fetch'
+import 'cross-fetch/polyfill'
 import { createApolloClient, restartWebsockets } from 'vue-cli-plugin-apollo/graphql-client'
-import jsCookie from 'js-cookie'
-import cookie from 'cookie'
+import Cookie from 'universal-cookie'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 
 Vue.use(VueApollo)
@@ -14,20 +13,15 @@ export default (ctx, inject) => {
   const AUTH_TOKEN_NAME = 'apollo-token'
   const COOKIE_ATTRIBUTES = {"expires":7,"path":"\u002F","secure":false}
   const AUTH_TYPE = 'Bearer '
+  const cookies = new Cookie(req && req.headers.cookie)
+  const onCacheInitStore = { }
 
   // Config
 
       const defaultTokenName = ''  || AUTH_TOKEN_NAME
-      const defaultCookieAttributes = ''  || COOKIE_ATTRIBUTES
 
       function defaultGetAuth () {
-        let token
-        if(process.server){
-          const cookies = cookie.parse((req && req.headers.cookie) || '')
-          token = cookies[defaultTokenName]
-        } else {
-          token = jsCookie.get(defaultTokenName, defaultCookieAttributes)
-        }
+        const token = cookies.get(defaultTokenName)
         return token && defaultClientConfig.validateToken(token) ? AUTH_TYPE + token : ''
       }
 
@@ -36,6 +30,11 @@ export default (ctx, inject) => {
         defaultClientConfig = {
   "httpEndpoint": "http://localhost:1337/graphql"
 }
+
+      if (process.server) {
+        onCacheInitStore['default'] = defaultClientConfig.onCacheInit
+        defaultClientConfig.onCacheInit = null
+      }
 
       const defaultValidateToken = () => true
 
@@ -48,16 +47,31 @@ export default (ctx, inject) => {
         : new InMemoryCache(defaultClientConfig.inMemoryCacheOptions ? defaultClientConfig.inMemoryCacheOptions: undefined)
 
       if (!process.server) {
-        defaultCache.restore(window.__NUXT__ ? window.__NUXT__.apollo.defaultClient : null)
+        defaultCache.restore(window.__NUXT__ && window.__NUXT__.apollo ? window.__NUXT__.apollo.defaultClient : null)
       }
 
       if (!defaultClientConfig.getAuth) {
         defaultClientConfig.getAuth = defaultGetAuth
       }
+
+      if (process.client && defaultClientConfig.browserHttpEndpoint) {
+        defaultClientConfig.httpEndpoint = defaultClientConfig.browserHttpEndpoint
+      }
+
       defaultClientConfig.ssr = !!process.server
       defaultClientConfig.cache = defaultCache
       defaultClientConfig.tokenName = defaultTokenName
-      defaultClientConfig.cookieAttributes = defaultCookieAttributes
+
+      // if ssr we'd still like to have our webclient's cookies
+      if (process.server && req && req.headers && req.headers.cookie) {
+        if (!defaultClientConfig.httpLinkOptions) {
+          defaultClientConfig.httpLinkOptions = {}
+        }
+        if (!defaultClientConfig.httpLinkOptions.headers) {
+          defaultClientConfig.httpLinkOptions.headers = {}
+        }
+        defaultClientConfig.httpLinkOptions.headers.cookie = req.headers.cookie
+      }
 
       // Create apollo client
       let defaultApolloCreation = createApolloClient({
@@ -80,44 +94,64 @@ export default (ctx, inject) => {
   if (process.server) {
     const ApolloSSR = require('vue-apollo/ssr')
     beforeNuxtRender(({ nuxtState }) => {
-      nuxtState.apollo = ApolloSSR.getStates(apolloProvider)
+      nuxtState.apollo = {}
+      const states = ApolloSSR.getStates(apolloProvider)
+
+      for (let clientName in states) {
+        nuxtState.apollo[clientName] = Object.assign({}, states[clientName])
+      }
+
+      // Clear apollo client cache after each request
+      // Issues: https://github.com/nuxt-community/apollo-module/issues/273
+      //         https://github.com/nuxt-community/apollo-module/issues/251
+      Object.keys(apolloProvider.clients).forEach(clientName => {
+        const client = apolloProvider.clients[clientName]
+        const onCacheInitKey = clientName === 'defaultClient' ? 'default' : clientName
+        const onCacheInit = onCacheInitStore[onCacheInitKey]
+        client.cache.reset()
+        if (typeof onCacheInit === 'function') onCacheInit(client.cache)
+      })
     })
   }
 
   inject('apolloHelpers', {
-    onLogin: async (token, apolloClient = apolloProvider.defaultClient, cookieAttributes = COOKIE_ATTRIBUTES) => {
+    onLogin: async (token, apolloClient = apolloProvider.defaultClient, cookieAttributes = COOKIE_ATTRIBUTES, skipResetStore = false) => {
       // Fallback for tokenExpires param
       if (typeof cookieAttributes === 'number') cookieAttributes = { expires: cookieAttributes }
 
+      if (typeof cookieAttributes.expires === 'number') {
+        cookieAttributes.expires = new Date(Date.now()+ 86400*1000*cookieAttributes.expires)
+      }
+
       if (token) {
-        jsCookie.set(AUTH_TOKEN_NAME, token, cookieAttributes)
+        cookies.set(AUTH_TOKEN_NAME, token, cookieAttributes)
       } else {
-        jsCookie.remove(AUTH_TOKEN_NAME, cookieAttributes)
+        cookies.remove(AUTH_TOKEN_NAME, cookieAttributes)
       }
       if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
-      try {
-        await apolloClient.resetStore()
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.log('%cError on cache reset (setToken)', 'color: orange;', e.message)
+      if (!skipResetStore) {
+        try {
+          await apolloClient.resetStore()
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.log('%cError on cache reset (setToken)', 'color: orange;', e.message)
+        }
       }
     },
-    onLogout: async (apolloClient = apolloProvider.defaultClient) => {
-        jsCookie.remove(AUTH_TOKEN_NAME, COOKIE_ATTRIBUTES)
-        if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
+    onLogout: async (apolloClient = apolloProvider.defaultClient, skipResetStore = false) => {
+      cookies.remove(AUTH_TOKEN_NAME, COOKIE_ATTRIBUTES)
+      if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
+      if (!skipResetStore) {
         try {
-            await apolloClient.resetStore()
+          await apolloClient.resetStore()
         } catch (e) {
-            // eslint-disable-next-line no-console
-            console.log('%cError on cache reset (logout)', 'color: orange;', e.message)
+          // eslint-disable-next-line no-console
+          console.log('%cError on cache reset (logout)', 'color: orange;', e.message)
         }
+      }
     },
     getToken: (tokenName = AUTH_TOKEN_NAME) => {
-        if(process.server){
-            const cookies = cookie.parse((req && req.headers.cookie) || '')
-            return cookies && cookies[tokenName]
-        }
-        return jsCookie.get(tokenName, COOKIE_ATTRIBUTES)
+      return cookies.get(tokenName)
     }
   })
 }

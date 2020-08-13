@@ -1,14 +1,23 @@
-require('dotenv').config();
+require("dotenv").config();
 
 export default {
-  mode: "universal",
   /*
-   ** Headers of the page
+   ** Nuxt rendering mode
+   ** See https://nuxtjs.org/api/configuration-mode
    */
+  mode: "universal",
   env: {
     strapiBaseUri: process.env.API_URL || "http://localhost:1337"
   },
-
+  /*
+   ** Nuxt target
+   ** See https://nuxtjs.org/api/configuration-target
+   */
+  target: "static",
+  /*
+   ** Headers of the page
+   ** See https://nuxtjs.org/api/configuration-head
+   */
   head: {
     title: process.env.npm_package_name || "",
     meta: [
@@ -24,36 +33,57 @@ export default {
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css?family=Staatliches"
+        href:
+          "https://fonts.googleapis.com/css2?family=Staatliches&display=swap"
       }
     ]
   },
   /*
-   ** Customize the progress-bar color
-   */
-  loading: { color: "#fff" },
-  /*
    ** Global CSS
    */
-  css: [
-    "uikit/dist/css/uikit.min.css",
-    "uikit/dist/css/uikit.css",
-    "@assets/css/main.css"
-  ],
+  css: ["@/assets/css/main.css"],
   /*
    ** Plugins to load before mounting the App
+   ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [{ src: "~/plugins/uikit.js", ssr: false }],
+  plugins: ["~plugins/vue-js-modal.js"],
+  components: true,
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [
-    '@nuxtjs/dotenv',
-  ],
+  buildModules: ["@nuxtjs/dotenv"],
   /*
    ** Nuxt.js modules
    */
-  modules: ["@nuxtjs/apollo", "@nuxtjs/markdownit"],
+  modules: [
+    // Doc: https://bootstrap-vue.js.org
+    "bootstrap-vue/nuxt",
+    // Doc: https://axios.nuxtjs.org/usage
+    "@nuxtjs/axios",
+    "@nuxtjs/pwa",
+    // Doc: https://github.com/nuxt/content
+    "@nuxt/content",
+    "@nuxtjs/apollo",
+    "@nuxtjs/markdownit"
+  ],
+  bootstrapVue: {
+    icons: true // Install the IconsPlugin (in addition to BootStrapVue plugin
+  },
+  /*
+   ** Axios module configuration
+   ** See https://axios.nuxtjs.org/options
+   */
+  axios: {},
+  /*
+   ** Content module configuration
+   ** See https://content.nuxtjs.org/configuration
+   */
+  content: {},
+  /*
+   ** Build configuration
+   ** See https://nuxtjs.org/api/configuration-build/
+   */
+  build: {},
   markdownit: {
     preset: "default",
     linkify: true,
@@ -63,29 +93,8 @@ export default {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: (process.env.API_URL || "http://localhost:1337") + "/graphql"
-      }
-    }
-  },
-  /*
-   ** Build configuration
-   */
-  build: {
-    /*
-     ** You can extend webpack config here
-     */
-    extend(config, ctx) {},
-    babel: {
-      presets({ isServer }) {
-        return [
-          [
-            require.resolve('@nuxt/babel-preset-app'),
-            {
-              buildTarget: isServer ? 'server' : 'client',
-              corejs: { version: 3 }
-            }
-          ]
-        ]
+        httpEndpoint:
+          (process.env.API_URL || "http://localhost:1337") + "/graphql"
       }
     }
   }

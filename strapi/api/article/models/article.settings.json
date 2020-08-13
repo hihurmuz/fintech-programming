@@ -1,6 +1,5 @@
 {
   "kind": "collectionType",
-  "connection": "default",
   "collectionName": "articles",
   "info": {
     "name": "article"
@@ -10,27 +9,40 @@
     "timestamps": true
   },
   "attributes": {
-    "title": {
-      "type": "string",
-      "required": true
+    "title_us": {
+      "type": "string"
     },
-    "content": {
-      "type": "richtext",
-      "required": true
+    "title_tr": {
+      "type": "string"
+    },
+    "title_cn": {
+      "type": "string"
+    },
+    "title_es": {
+      "type": "string"
+    },
+    "content_us": {
+      "type": "richtext"
+    },
+    "content_tr": {
+      "type": "richtext"
+    },
+    "content_cn": {
+      "type": "richtext"
+    },
+    "content_es": {
+      "type": "richtext"
     },
     "image": {
       "model": "file",
       "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
       "plugin": "upload",
-      "required": true
-    },
-    "published_at": {
-      "type": "date",
-      "required": true
-    },
-    "category": {
-      "model": "category",
-      "via": "articles"
+      "required": false
     }
   }
 }

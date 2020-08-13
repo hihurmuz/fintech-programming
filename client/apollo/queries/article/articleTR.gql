@@ -1,0 +1,11 @@
+query ArticleTr($id: ID!) {
+  articleTr(id: $id) {
+    id
+    title
+    content
+    image {
+      url
+    }
+    publised_at
+  }
+}

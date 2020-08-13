@@ -8,12 +8,20 @@ import NuxtError from './components/nuxt-error.vue'
 import Nuxt from './components/nuxt.js'
 import App from './App.js'
 import { setContext, getLocation, getRouteData, normalizeError } from './utils'
+import { createStore } from './store.js'
 
 /* Plugins */
 
+import nuxt_plugin_plugin_56393938 from 'nuxt_plugin_plugin_56393938' // Source: .\\components\\plugin.js (mode: 'all')
+import nuxt_plugin_workbox_15784bb7 from 'nuxt_plugin_workbox_15784bb7' // Source: .\\workbox.js (mode: 'client')
+import nuxt_plugin_nuxticons_504208cd from 'nuxt_plugin_nuxticons_504208cd' // Source: .\\nuxt-icons.js (mode: 'all')
+import nuxt_plugin_bootstrapvue_c223d6ec from 'nuxt_plugin_bootstrapvue_c223d6ec' // Source: .\\bootstrap-vue.js (mode: 'all')
 import nuxt_plugin_markdownit_386acea8 from 'nuxt_plugin_markdownit_386acea8' // Source: .\\markdown-it.js (mode: 'all')
 import nuxt_plugin_apollomodule_d8cffbb2 from 'nuxt_plugin_apollomodule_d8cffbb2' // Source: .\\apollo-module.js (mode: 'all')
-import nuxt_plugin_uikit_47fa8f2a from 'nuxt_plugin_uikit_47fa8f2a' // Source: ..\\plugins\\uikit.js (mode: 'client')
+import nuxt_plugin_pluginclient_3f6b3dee from 'nuxt_plugin_pluginclient_3f6b3dee' // Source: .\\content\\plugin.client.js (mode: 'client')
+import nuxt_plugin_pluginserver_b5b6a114 from 'nuxt_plugin_pluginserver_b5b6a114' // Source: .\\content\\plugin.server.js (mode: 'server')
+import nuxt_plugin_axios_c55a7d4a from 'nuxt_plugin_axios_c55a7d4a' // Source: .\\axios.js (mode: 'all')
+import nuxt_plugin_vuejsmodal_0719e4a0 from 'nuxt_plugin_vuejsmodal_0719e4a0' // Source: ..\\plugins\\vue-js-modal.js (mode: 'all')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -47,13 +55,22 @@ const defaultTransition = {"name":"page","mode":"out-in","appear":false,"appearC
 async function createApp(ssrContext, config = {}) {
   const router = await createRouter(ssrContext)
 
+  const store = createStore(ssrContext)
+  // Add this.$router into store actions/mutations
+  store.$router = router
+
+  // Fix SSR caveat https://github.com/nuxt/nuxt.js/issues/3757#issuecomment-414689141
+  const registerModule = store.registerModule
+  store.registerModule = (path, rawModule, options) => registerModule.call(store, path, rawModule, Object.assign({ preserveState: process.client }, options))
+
   // Create Root instance
 
   // here we inject the router and store to all child components,
   // making them available everywhere as `this.$router` and `this.$store`.
   const app = {
-    head: {"title":"frontend","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"My polished Nuxt.js project"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"},{"rel":"stylesheet","href":"https:\u002F\u002Ffonts.googleapis.com\u002Fcss?family=Staatliches"}],"style":[],"script":[]},
+    head: {"title":"client-blog","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"## Build Setup"},{"hid":"mobile-web-app-capable","name":"mobile-web-app-capable","content":"yes"},{"hid":"apple-mobile-web-app-title","name":"apple-mobile-web-app-title","content":"client-blog"},{"hid":"theme-color","name":"theme-color","content":"black"},{"hid":"og:type","name":"og:type","property":"og:type","content":"website"},{"hid":"og:title","name":"og:title","property":"og:title","content":"client-blog"},{"hid":"og:site_name","name":"og:site_name","property":"og:site_name","content":"client-blog"},{"hid":"og:description","name":"og:description","property":"og:description","content":"## Build Setup"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"},{"rel":"stylesheet","href":"https:\u002F\u002Ffonts.googleapis.com\u002Fcss2?family=Staatliches&display=swap"},{"rel":"manifest","href":"\u002F_nuxt\u002Fmanifest.d9ff851d.json"},{"rel":"shortcut icon","href":"\u002F_nuxt\u002Ficons\u002Ficon_64.5f6a36.png"},{"rel":"apple-touch-icon","href":"\u002F_nuxt\u002Ficons\u002Ficon_512.5f6a36.png","sizes":"512x512"}],"style":[],"script":[],"htmlAttrs":{"lang":"en"}},
 
+    store,
     router,
     nuxt: {
       defaultTransition,
@@ -98,6 +115,9 @@ async function createApp(ssrContext, config = {}) {
     ...App
   }
 
+  // Make app available into store via this.app
+  store.app = app
+
   const next = ssrContext ? ssrContext.next : location => app.router.push(location)
   // Resolve route
   let route
@@ -110,6 +130,7 @@ async function createApp(ssrContext, config = {}) {
 
   // Set context to app.context
   await setContext(app, {
+    store,
     route,
     next,
     error: app.nuxt.error.bind(app),
@@ -136,6 +157,9 @@ async function createApp(ssrContext, config = {}) {
       app.context[key] = value
     }
 
+    // Add into store
+    store[key] = app[key]
+
     // Check if plugin not already installed
     const installKey = '__nuxt_' + key + '_installed__'
     if (Vue[installKey]) {
@@ -157,6 +181,13 @@ async function createApp(ssrContext, config = {}) {
   // Inject runtime config as $config
   inject('config', config)
 
+  if (process.client) {
+    // Replace store state before plugins execution
+    if (window.__NUXT__ && window.__NUXT__.state) {
+      store.replaceState(window.__NUXT__.state)
+    }
+  }
+
   // Add enablePreview(previewData = {}) in context for plugins
   if (process.static && process.client) {
     app.context.enablePreview = function (previewData = {}) {
@@ -166,6 +197,22 @@ async function createApp(ssrContext, config = {}) {
   }
   // Plugin execution
 
+  if (typeof nuxt_plugin_plugin_56393938 === 'function') {
+    await nuxt_plugin_plugin_56393938(app.context, inject)
+  }
+
+  if (process.client && typeof nuxt_plugin_workbox_15784bb7 === 'function') {
+    await nuxt_plugin_workbox_15784bb7(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_nuxticons_504208cd === 'function') {
+    await nuxt_plugin_nuxticons_504208cd(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_bootstrapvue_c223d6ec === 'function') {
+    await nuxt_plugin_bootstrapvue_c223d6ec(app.context, inject)
+  }
+
   if (typeof nuxt_plugin_markdownit_386acea8 === 'function') {
     await nuxt_plugin_markdownit_386acea8(app.context, inject)
   }
@@ -174,8 +221,20 @@ async function createApp(ssrContext, config = {}) {
     await nuxt_plugin_apollomodule_d8cffbb2(app.context, inject)
   }
 
-  if (process.client && typeof nuxt_plugin_uikit_47fa8f2a === 'function') {
-    await nuxt_plugin_uikit_47fa8f2a(app.context, inject)
+  if (process.client && typeof nuxt_plugin_pluginclient_3f6b3dee === 'function') {
+    await nuxt_plugin_pluginclient_3f6b3dee(app.context, inject)
+  }
+
+  if (process.server && typeof nuxt_plugin_pluginserver_b5b6a114 === 'function') {
+    await nuxt_plugin_pluginserver_b5b6a114(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_axios_c55a7d4a === 'function') {
+    await nuxt_plugin_axios_c55a7d4a(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_vuejsmodal_0719e4a0 === 'function') {
+    await nuxt_plugin_vuejsmodal_0719e4a0(app.context, inject)
   }
 
   // Lock enablePreview in context
@@ -188,9 +247,13 @@ async function createApp(ssrContext, config = {}) {
   // If server-side, wait for async component to be resolved first
   if (process.server && ssrContext && ssrContext.url) {
     await new Promise((resolve, reject) => {
-      router.push(ssrContext.url, resolve, () => {
+      router.push(ssrContext.url, resolve, (err) => {
+        // https://github.com/vuejs/vue-router/blob/v3.3.4/src/history/errors.js
+        if (!err._isRouter) return reject(err)
+        if (err.type !== 1 /* NavigationFailureType.redirected */) return resolve()
+
         // navigated to a different route in router guard
-        const unregister = router.afterEach(async (to, from, next) => {
+        const unregister = router.afterEach(async (to, from) => {
           ssrContext.url = to.fullPath
           app.context.route = await getRouteData(to)
           app.context.params = to.params || {}
@@ -203,6 +266,7 @@ async function createApp(ssrContext, config = {}) {
   }
 
   return {
+    store,
     app,
     router
   }

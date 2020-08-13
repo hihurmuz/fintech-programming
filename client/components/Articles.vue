@@ -1,80 +1,66 @@
 <template>
   <div>
-    <div class="uk-child-width-1-2" uk-grid>
-      <div>
-        <nuxt-link
-          v-for="article in leftArticles"
-          :to="{ name: 'articles-id', params: { id: article.id } }"
-          class="uk-link-reset"
-          :key="article.id"
-        >
-          <div class="uk-card uk-card-muted">
-            <div class="uk-card-media-top">
-              <img :src="api_url + article.image.url" alt="" height="100" />
-            </div>
-            <div class="uk-card-body">
-              <p
-                id="category"
-                v-if="article.category"
-                class="uk-text-uppercase"
-              >
-                {{ article.category.name }}
-              </p>
-              <p id="title" class="uk-text-large">{{ article.title }}</p>
-            </div>
-          </div>
-        </nuxt-link>
-      </div>
-      <div>
-        <div class="uk-child-width-1-2@m uk-grid-match" uk-grid>
+    <div class="mr-0 ml-0">
+      <b-row>
+        <b-col class="d-flex flex-wrap rightCard">
           <nuxt-link
+            class="md-2 rightCardElement"
             v-for="article in rightArticles"
             :to="{ name: 'articles-id', params: { id: article.id } }"
-            class="uk-link-reset"
             :key="article.id"
           >
-            <div class="uk-card uk-card-muted">
-              <div class="uk-card-media-top">
-                <img :src="api_url + article.image.url" alt="" height="100" />
+            <div class="articleCard">
+              <div>
+                <img class="articleLeftImg" :src="api_url + article.image.url" alt height="100" />
               </div>
-              <div class="uk-card-body">
-                <p
-                  id="category"
-                  v-if="article.category"
-                  class="uk-text-uppercase"
-                >
-                  {{ article.category.name }}
-                </p>
-                <p id="title" class="uk-text-large">{{ article.title }}</p>
+              <div class="pt-4 pr-2 pb-2 pl-4">
+                <p id="articleCategory" v-if="article.category">{{ article.category.name }}</p>
+                <p id="articleTitle">{{ article.title }}</p>
               </div>
             </div>
           </nuxt-link>
-        </div>
-      </div>
+        </b-col>
+      </b-row>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  data: function() {
+  data: function () {
     return {
-      api_url: process.env.strapiBaseUri
+      api_url: process.env.strapiBaseUri,
     };
   },
   props: {
-    articles: Array
+    articles: Array,
   },
   computed: {
-    leftArticlesCount() {
-      return Math.ceil(this.articles.length / 5);
-    },
-    leftArticles() {
-      return this.articles.slice(0, this.leftArticlesCount);
-    },
     rightArticles() {
-      return this.articles.slice(this.leftArticlesCount, this.articles.length);
-    }
-  }
+      return this.articles.reverse().slice(0, 12);
+    },
+  },
 };
 </script>
+
+<style>
+.articleCard {
+  position: relative;
+  box-sizing: border-box;
+  transition: box-shadow 0.1s ease-in-out;
+}
+.articleLeftImg {
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
+}
+.rightCard {
+  justify-content: space-around;
+  align-content: flex-start;
+}
+.rightCardElement {
+  border: 1px solid rgba(78, 76, 76, 0.3);
+  margin-bottom: 15px;
+  width: 30%;
+}
+</style>

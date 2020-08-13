@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/cagetories",
+      "handler": "cagetory.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/cagetories/count",
+      "handler": "cagetory.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/cagetories/:id",
+      "handler": "cagetory.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/cagetories",
+      "handler": "cagetory.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/cagetories/:id",
+      "handler": "cagetory.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/cagetories/:id",
+      "handler": "cagetory.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

@@ -14,7 +14,8 @@ import {
   getLocation,
   compile,
   getQueryDiff,
-  globalHandleError
+  globalHandleError,
+  isSamePath
 } from './utils.js'
 import { createApp, NuxtError } from './index.js'
 import fetchMixin from './mixins/fetch.client'
@@ -36,6 +37,7 @@ if (!global.fetch) { global.fetch = fetch }
 let _lastPaths = []
 let app
 let router
+let store
 
 // Try to rehydrate SSR data from window
 const NUXT = window.__NUXT__ || {}
@@ -714,6 +716,7 @@ async function mountApp (__app) {
   // Set global variables
   app = __app.app
   router = __app.router
+  store = __app.store
 
   // Create Vue instance
   const _app = new Vue(app)
@@ -765,13 +768,11 @@ async function mountApp (__app) {
   router.beforeEach(render.bind(_app))
 
   // Fix in static: remove trailing slash to force hydration
-  if (process.static && NUXT.serverRendered && NUXT.routePath !== '/' && NUXT.routePath.slice(-1) !== '/' && _app.context.route.path.slice(-1) === '/') {
-    _app.context.route.path = _app.context.route.path.replace(/\/+$/, '')
-  }
-  // If page already is server rendered and it was done on the same route path as client side render
-  if (NUXT.serverRendered && NUXT.routePath === _app.context.route.path) {
-    mount()
-    return
+  // Full static, if server-rendered: hydrate, to allow custom redirect to generated page
+
+  // Fix in static: remove trailing slash to force hydration
+  if (NUXT.serverRendered && isSamePath(NUXT.routePath, _app.context.route.path)) {
+    return mount()
   }
 
   // First render on client-side

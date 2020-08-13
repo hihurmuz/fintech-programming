@@ -5,11 +5,13 @@ import { getMatchedComponentsInstances, getChildrenComponentInstancesUsingFetch,
 import NuxtLoading from './components/nuxt-loading.vue'
 import NuxtBuildIndicator from './components/nuxt-build-indicator'
 
-import '..\\node_modules\\uikit\\dist\\css\\uikit.min.css'
+import '..\\node_modules\\bootstrap\\dist\\css\\bootstrap.css'
 
-import '..\\node_modules\\uikit\\dist\\css\\uikit.css'
+import '..\\node_modules\\bootstrap-vue\\dist\\bootstrap-vue.css'
 
 import '..\\assets\\css\\main.css'
+
+import '..\\node_modules\\prismjs\\themes\\prism.css'
 
 import _6f6c098b from '..\\layouts\\default.vue'
 
@@ -98,6 +100,10 @@ export default {
 
     isFetching () {
       return this.nbFetching > 0
+    },
+
+    isPreview () {
+      return Boolean(this.$options.previewData)
     },
   },
 

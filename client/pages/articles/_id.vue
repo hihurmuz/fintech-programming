@@ -1,25 +1,14 @@
 <template>
   <div>
-    <div
-      v-if="article.image"
-      id="banner"
-      class="uk-height-small uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-light uk-padding"
-      :data-src="api_url + article.image.url"
-      uk-img
-    >
-      <h1>{{ article.title }}</h1>
+    <button @click="izle">izle</button>
+    <div v-if="articles.image" :data-src="api_url + articles.image.url">
+      <h1>{{ articles.title }}</h1>
     </div>
 
-    <div class="uk-section">
-      <div class="uk-container uk-container-small">
-        <div
-          v-if="article.content"
-          id="editor"
-          v-html="$md.render(article.content)"
-        ></div>
-        <p v-if="article.published_at">
-          {{ moment(article.published_at).format("MMM Do YY") }}
-        </p>
+    <div>
+      <div>
+        <div v-if="articles.content" v-html="$md.render(articles.content)"></div>
+        <p v-if="articles.published_at">{{ moment(articles.published_at).format("MMM Do YY") }}</p>
       </div>
     </div>
   </div>
@@ -27,15 +16,26 @@
 
 <script>
 import articleQuery from "~/apollo/queries/article/article";
+import articleTrQuery from "~/apollo/queries/article/articleTR";
 var moment = require("moment");
 
 export default {
   data() {
     return {
       article: {},
+      articleTr: {},
       moment: moment,
-      api_url: process.env.strapiBaseUri
+      api_url: process.env.strapiBaseUri,
     };
+  },
+  computed: {
+    articles() {
+      if (this.$store.state.language === "us") {
+        return this.article;
+      } else if (this.$store.state.language === "tr") {
+        return this.articleTr;
+      }
+    },
   },
   apollo: {
     article: {
@@ -43,8 +43,20 @@ export default {
       query: articleQuery,
       variables() {
         return { id: parseInt(this.$route.params.id) };
-      }
-    }
-  }
+      },
+    },
+    articleTr: {
+      prefetch: true,
+      query: articleTrQuery,
+      variables() {
+        return { id: parseInt(this.$route.params.id) };
+      },
+    },
+  },
+  methods: {
+    izle() {
+      console.log(this.articleTr);
+    },
+  },
 };
 </script>

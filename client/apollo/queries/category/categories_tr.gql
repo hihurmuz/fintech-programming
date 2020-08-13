@@ -1,0 +1,6 @@
+query CategoriesTr {
+  categoryTrs {
+    id
+    name
+  }
+}

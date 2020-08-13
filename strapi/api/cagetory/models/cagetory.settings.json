@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cagetories",
+  "info": {
+    "name": "Cagetory"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name_us": {
+      "type": "string"
+    },
+    "name_tr": {
+      "type": "string"
+    },
+    "name_cn": {
+      "type": "string"
+    },
+    "name_es": {
+      "type": "string"
+    },
+    "article_groups": {
+      "via": "cagetories",
+      "collection": "article-group",
+      "dominant": true
+    }
+  }
+}

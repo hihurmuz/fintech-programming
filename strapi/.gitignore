@@ -45,6 +45,7 @@ $RECYCLE.BIN/
 *.jar
 *.rar
 *.tar
+*.zip
 *.com
 *.class
 *.dll
@@ -106,6 +107,8 @@ coverage
 # Strapi
 ############################
 
+.env
+license.txt
 exports
 .cache
 build

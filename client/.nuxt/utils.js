@@ -146,7 +146,7 @@ export async function setContext (app, context) {
       isDev: true,
       isHMR: false,
       app,
-
+      store: app.store,
       payload: context.payload,
       error: context.error,
       base: '/',
@@ -620,10 +620,18 @@ export function addLifecycleHook(vm, hook, fn) {
   }
 }
 
-export const urlJoin = function urlJoin () {
+export function urlJoin () {
   return [].slice
     .call(arguments)
     .join('/')
     .replace(/\/+/g, '/')
     .replace(':/', '://')
+}
+
+export function stripTrailingSlash (path) {
+  return path.replace(/\/+$/, '') || '/'
+}
+
+export function isSamePath (p1, p2) {
+  return stripTrailingSlash(p1) === stripTrailingSlash(p2)
 }
