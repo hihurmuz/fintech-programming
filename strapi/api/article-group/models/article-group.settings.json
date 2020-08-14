@@ -29,10 +29,6 @@
     "time": {
       "type": "datetime"
     },
-    "cagetories": {
-      "collection": "cagetory",
-      "via": "article_groups"
-    },
     "title_us": {
       "type": "string"
     },

@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "08/13/2020 10:58:14 PM"
+    "x-generation-date": "08/14/2020 7:43:19 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -1591,7 +1591,7 @@
         ]
       }
     },
-    "/cagetories": {
+    "/categories": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -1603,7 +1603,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Cagetory"
+                    "$ref": "#/components/schemas/Category"
                   }
                 }
               }
@@ -1642,7 +1642,7 @@
         },
         "summary": "",
         "tags": [
-          "Cagetory"
+          "Category"
         ],
         "parameters": [
           {
@@ -1792,7 +1792,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Cagetory"
+                  "$ref": "#/components/schemas/Category"
                 }
               }
             }
@@ -1830,7 +1830,7 @@
         },
         "summary": "",
         "tags": [
-          "Cagetory"
+          "Category"
         ],
         "requestBody": {
           "description": "",
@@ -1838,14 +1838,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewCagetory"
+                "$ref": "#/components/schemas/NewCategory"
               }
             }
           }
         }
       }
     },
-    "/cagetories/count": {
+    "/categories/count": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -1897,12 +1897,12 @@
         },
         "summary": "",
         "tags": [
-          "Cagetory"
+          "Category"
         ],
         "parameters": []
       }
     },
-    "/cagetories/{id}": {
+    "/categories/{id}": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -1912,7 +1912,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Cagetory"
+                  "$ref": "#/components/schemas/Category"
                 }
               }
             }
@@ -1950,7 +1950,7 @@
         },
         "summary": "",
         "tags": [
-          "Cagetory"
+          "Category"
         ],
         "parameters": [
           {
@@ -1974,7 +1974,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Cagetory"
+                  "$ref": "#/components/schemas/Category"
                 }
               }
             }
@@ -2012,7 +2012,7 @@
         },
         "summary": "",
         "tags": [
-          "Cagetory"
+          "Category"
         ],
         "requestBody": {
           "description": "",
@@ -2020,7 +2020,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewCagetory"
+                "$ref": "#/components/schemas/NewCategory"
               }
             }
           }
@@ -2086,7 +2086,7 @@
         },
         "summary": "",
         "tags": [
-          "Cagetory"
+          "Category"
         ],
         "parameters": [
           {
@@ -4355,43 +4355,6 @@
           "time": {
             "type": "datetime"
           },
-          "cagetories": {
-            "type": "array",
-            "items": {
-              "required": [
-                "id"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "name_us": {
-                  "type": "string"
-                },
-                "name_tr": {
-                  "type": "string"
-                },
-                "name_cn": {
-                  "type": "string"
-                },
-                "name_es": {
-                  "type": "string"
-                },
-                "article_groups": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "created_by": {
-                  "type": "string"
-                },
-                "updated_by": {
-                  "type": "string"
-                }
-              }
-            }
-          },
           "title_us": {
             "type": "string"
           },
@@ -4504,12 +4467,6 @@
           },
           "time": {
             "type": "datetime"
-          },
-          "cagetories": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           },
           "title_us": {
             "type": "string"
@@ -4953,7 +4910,7 @@
           }
         }
       },
-      "Cagetory": {
+      "Category": {
         "required": [
           "id"
         ],
@@ -4974,51 +4931,42 @@
             "type": "string"
           },
           "article_groups": {
-            "type": "array",
-            "items": {
-              "required": [
-                "id"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "articles": {
-                  "type": "string"
-                },
-                "image": {
-                  "type": "string"
-                },
-                "author": {
-                  "type": "string"
-                },
-                "time": {
-                  "type": "datetime"
-                },
-                "cagetories": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "title_us": {
-                  "type": "string"
-                },
-                "title_tr": {
-                  "type": "string"
-                },
-                "title_cn": {
-                  "type": "string"
-                },
-                "title_es": {
-                  "type": "string"
-                },
-                "created_by": {
-                  "type": "string"
-                },
-                "updated_by": {
-                  "type": "string"
-                }
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "articles": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string"
+              },
+              "author": {
+                "type": "string"
+              },
+              "time": {
+                "type": "datetime"
+              },
+              "title_us": {
+                "type": "string"
+              },
+              "title_tr": {
+                "type": "string"
+              },
+              "title_cn": {
+                "type": "string"
+              },
+              "title_es": {
+                "type": "string"
+              },
+              "created_by": {
+                "type": "string"
+              },
+              "updated_by": {
+                "type": "string"
               }
             }
           },
@@ -5112,7 +5060,7 @@
           }
         }
       },
-      "NewCagetory": {
+      "NewCategory": {
         "properties": {
           "name_us": {
             "type": "string"
@@ -5127,10 +5075,7 @@
             "type": "string"
           },
           "article_groups": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "created_by": {
             "type": "string"
@@ -5602,7 +5547,7 @@
       "name": "Author"
     },
     {
-      "name": "Cagetory"
+      "name": "Category"
     },
     {
       "name": "Email - Email"

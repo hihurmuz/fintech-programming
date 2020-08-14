@@ -1,6 +1,6 @@
 {
   "paths": {
-    "/article-groups": {
+    "/categories": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -10,10 +10,9 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "foo": {
-                      "type": "string"
-                    }
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
                   }
                 }
               }
@@ -52,7 +51,7 @@
         },
         "summary": "",
         "tags": [
-          "Article-group"
+          "Category"
         ],
         "parameters": [
           {
@@ -202,11 +201,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "foo": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Category"
                 }
               }
             }
@@ -244,7 +239,7 @@
         },
         "summary": "",
         "tags": [
-          "Article-group"
+          "Category"
         ],
         "requestBody": {
           "description": "",
@@ -252,14 +247,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewArticle-group"
+                "$ref": "#/components/schemas/NewCategory"
               }
             }
           }
         }
       }
     },
-    "/article-groups/count": {
+    "/categories/count": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -270,8 +265,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "foo": {
-                      "type": "string"
+                    "count": {
+                      "type": "integer"
                     }
                   }
                 }
@@ -311,12 +306,12 @@
         },
         "summary": "",
         "tags": [
-          "Article-group"
+          "Category"
         ],
         "parameters": []
       }
     },
-    "/article-groups/{id}": {
+    "/categories/{id}": {
       "get": {
         "deprecated": false,
         "description": "",
@@ -326,11 +321,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "foo": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Category"
                 }
               }
             }
@@ -368,7 +359,7 @@
         },
         "summary": "",
         "tags": [
-          "Article-group"
+          "Category"
         ],
         "parameters": [
           {
@@ -392,11 +383,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "foo": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Category"
                 }
               }
             }
@@ -434,7 +421,7 @@
         },
         "summary": "",
         "tags": [
-          "Article-group"
+          "Category"
         ],
         "requestBody": {
           "description": "",
@@ -442,7 +429,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewArticle-group"
+                "$ref": "#/components/schemas/NewCategory"
               }
             }
           }
@@ -508,7 +495,7 @@
         },
         "summary": "",
         "tags": [
-          "Article-group"
+          "Category"
         ],
         "parameters": [
           {
@@ -527,7 +514,7 @@
   },
   "components": {
     "schemas": {
-      "Article-group": {
+      "Category": {
         "required": [
           "id"
         ],
@@ -535,13 +522,37 @@
           "id": {
             "type": "string"
           },
-          "articles": {
+          "name_us": {
+            "type": "string"
+          },
+          "name_tr": {
+            "type": "string"
+          },
+          "name_cn": {
+            "type": "string"
+          },
+          "name_es": {
+            "type": "string"
+          },
+          "article_groups": {
             "required": [
               "id"
             ],
             "properties": {
               "id": {
                 "type": "string"
+              },
+              "articles": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string"
+              },
+              "author": {
+                "type": "string"
+              },
+              "time": {
+                "type": "datetime"
               },
               "title_us": {
                 "type": "string"
@@ -555,21 +566,6 @@
               "title_es": {
                 "type": "string"
               },
-              "content_us": {
-                "type": "string"
-              },
-              "content_tr": {
-                "type": "string"
-              },
-              "content_cn": {
-                "type": "string"
-              },
-              "content_es": {
-                "type": "string"
-              },
-              "image": {
-                "type": "string"
-              },
               "created_by": {
                 "type": "string"
               },
@@ -577,119 +573,6 @@
                 "type": "string"
               }
             }
-          },
-          "image": {
-            "required": [
-              "id",
-              "name",
-              "hash",
-              "mime",
-              "size",
-              "url",
-              "provider"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "alternativeText": {
-                "type": "string"
-              },
-              "caption": {
-                "type": "string"
-              },
-              "width": {
-                "type": "integer"
-              },
-              "height": {
-                "type": "integer"
-              },
-              "formats": {
-                "type": "object"
-              },
-              "hash": {
-                "type": "string"
-              },
-              "ext": {
-                "type": "string"
-              },
-              "mime": {
-                "type": "string"
-              },
-              "size": {
-                "type": "number"
-              },
-              "url": {
-                "type": "string"
-              },
-              "previewUrl": {
-                "type": "string"
-              },
-              "provider": {
-                "type": "string"
-              },
-              "provider_metadata": {
-                "type": "object"
-              },
-              "related": {
-                "type": "string"
-              },
-              "created_by": {
-                "type": "string"
-              },
-              "updated_by": {
-                "type": "string"
-              }
-            }
-          },
-          "author": {
-            "required": [
-              "id"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "avatar": {
-                "type": "string"
-              },
-              "profile": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string"
-              },
-              "twitterlink": {
-                "type": "string"
-              },
-              "created_by": {
-                "type": "string"
-              },
-              "updated_by": {
-                "type": "string"
-              }
-            }
-          },
-          "time": {
-            "type": "datetime"
-          },
-          "title_us": {
-            "type": "string"
-          },
-          "title_tr": {
-            "type": "string"
-          },
-          "title_cn": {
-            "type": "string"
-          },
-          "title_es": {
-            "type": "string"
           },
           "created_by": {
             "required": [
@@ -781,27 +664,21 @@
           }
         }
       },
-      "NewArticle-group": {
+      "NewCategory": {
         "properties": {
-          "articles": {
+          "name_us": {
             "type": "string"
           },
-          "author": {
+          "name_tr": {
             "type": "string"
           },
-          "time": {
-            "type": "datetime"
-          },
-          "title_us": {
+          "name_cn": {
             "type": "string"
           },
-          "title_tr": {
+          "name_es": {
             "type": "string"
           },
-          "title_cn": {
-            "type": "string"
-          },
-          "title_es": {
+          "article_groups": {
             "type": "string"
           },
           "created_by": {
@@ -814,5 +691,9 @@
       }
     }
   },
-  "tags": []
+  "tags": [
+    {
+      "name": "Category"
+    }
+  ]
 }
