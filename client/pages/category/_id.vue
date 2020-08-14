@@ -5,6 +5,7 @@
         <h1 class="headerCategories ml-4">
           {{ categoryNameLanguage(category) }}
         </h1>
+        <ArticlesCard :articles="category.article_groups || []" />
       </div>
     </div>
   </div>
@@ -12,23 +13,20 @@
 
 <script>
 import articlesCategories from "../../apollo/queries/article/articles-categories";
+import ArticlesCard from "../../components/ArticlesCard";
 export default {
   data() {
     return {
       category: []
     };
   },
-  /*components: {    import ArticlesCard from "../../components/ArticlesCard";
-
+  components: {
     ArticlesCard
   },
-        <ArticlesCard :articles="category.article_groups || []"/>
-
-  */
   apollo: {
     category: {
       prefetch: true,
-      query: articlesQuery,
+      query: articlesCategories,
       variables() {
         return { id: parseInt(this.$route.params.id) };
       }
