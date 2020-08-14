@@ -46,7 +46,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ["~plugins/vue-js-modal.js"],
+  plugins: ["~plugins/vue-js-modal.js", "~/plugins/languageChecker.js"],
   components: true,
   /*
    ** Nuxt.js dev-modules
@@ -60,6 +60,7 @@ export default {
     "bootstrap-vue/nuxt",
     // Doc: https://axios.nuxtjs.org/usage
     "@nuxtjs/axios",
+    "@nuxtjs/auth",
     "@nuxtjs/pwa",
     // Doc: https://github.com/nuxt/content
     "@nuxt/content",
