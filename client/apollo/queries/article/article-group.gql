@@ -1,0 +1,34 @@
+query ArticleGroup($id: ID!) {
+  articleGroup(id: $id) {
+    id
+    title_us
+    title_tr
+    title_cn
+    title_es
+    updated_at
+    image {
+      url
+    }
+    author {
+      id
+      name
+      avatar {
+        url
+      }
+    }
+    articles {
+      id
+      title_us
+      title_tr
+      title_cn
+      title_es
+      content_us
+      content_tr
+      content_cn
+      content_es
+      image {
+        url
+      }
+    }
+  }
+}

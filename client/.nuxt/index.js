@@ -22,6 +22,8 @@ import nuxt_plugin_pluginclient_3f6b3dee from 'nuxt_plugin_pluginclient_3f6b3dee
 import nuxt_plugin_pluginserver_b5b6a114 from 'nuxt_plugin_pluginserver_b5b6a114' // Source: .\\content\\plugin.server.js (mode: 'server')
 import nuxt_plugin_axios_c55a7d4a from 'nuxt_plugin_axios_c55a7d4a' // Source: .\\axios.js (mode: 'all')
 import nuxt_plugin_vuejsmodal_0719e4a0 from 'nuxt_plugin_vuejsmodal_0719e4a0' // Source: ..\\plugins\\vue-js-modal.js (mode: 'all')
+import nuxt_plugin_languageChecker_3a7944e0 from 'nuxt_plugin_languageChecker_3a7944e0' // Source: ..\\plugins\\languageChecker.js (mode: 'all')
+import nuxt_plugin_plugin_34f5fe6c from 'nuxt_plugin_plugin_34f5fe6c' // Source: .\\auth\\plugin.js (mode: 'all')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -235,6 +237,14 @@ async function createApp(ssrContext, config = {}) {
 
   if (typeof nuxt_plugin_vuejsmodal_0719e4a0 === 'function') {
     await nuxt_plugin_vuejsmodal_0719e4a0(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_languageChecker_3a7944e0 === 'function') {
+    await nuxt_plugin_languageChecker_3a7944e0(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_plugin_34f5fe6c === 'function') {
+    await nuxt_plugin_plugin_34f5fe6c(app.context, inject)
   }
 
   // Lock enablePreview in context

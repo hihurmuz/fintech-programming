@@ -1,16 +1,17 @@
-query Category($id: ID!){
+query Category($id: ID!) {
   category(id: $id) {
-    name
-    articles {
-         id
-      title
-      content
+    name_us
+    name_tr
+    name_cn
+    name_es
+    article_groups {
+      id
+      title_us
+      title_tr
+      title_cn
+      title_es
       image {
         url
-      }
-      category {
-        id
-        name
       }
     }
   }

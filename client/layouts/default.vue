@@ -16,25 +16,22 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-form class="searchArea">
-            <b-form-input size="sm" class="mr-sm-2 searchInput" placeholder="Search"></b-form-input>
+            <b-form-input
+              size="sm"
+              class="mr-sm-2 searchInput"
+              placeholder="Search"
+            ></b-form-input>
             <b-icon-search @click="$modal.show('example')" id="searchIcon" />
           </b-nav-form>
 
           <client-only>
-            <b-row class="ml-2 mr-2" v-if="this.$store.state.language === 'us'">
+            <b-row class="ml-2 mr-2">
               <b-nav-item
                 :key="category.id"
                 v-for="category in categories"
-                :to="{ name: 'categories-id', params: { id: category.id } }"
-              >{{ category.name }}</b-nav-item>
-            </b-row>
-
-            <b-row class="ml-2 mr-2" v-if="this.$store.state.language === 'tr'">
-              <b-nav-item
-                :key="category.id"
-                v-for="category in categoryTrs"
-                :to="{ name: 'categories-id', params: { id: category.id } }"
-              >{{ category.name }}</b-nav-item>
+                :to="{ name: 'category-id', params: { id: category.id } }"
+                >{{ categoryNameLanguage(category) }}</b-nav-item
+              >
             </b-row>
           </client-only>
 
@@ -60,16 +57,22 @@
       <b-row id="modalRow">
         <b-col class="imageArea"></b-col>
         <b-col class="pl-5 pt-5">
-          <b-icon id="closeIcon" @click="$modal.hide('example')" icon="x" font-scale="2"></b-icon>
+          <b-icon
+            id="closeIcon"
+            @click="$modal.hide('example')"
+            icon="x"
+            font-scale="2"
+          ></b-icon>
 
           <h1 class="header">FINTECH PROGRAMMING</h1>
           <ul id="categoryList">
             <li :key="category.id" v-for="category in categories">
               <nuxt-link
                 id="categoryItem"
-                :to="{ name: 'categories-id', params: { id: category.id } }"
+                :to="{ name: 'category-id', params: { id: category.id } }"
                 tag="a"
-              >{{ category.name }}</nuxt-link>
+                >{{ category.id }}</nuxt-link
+              >
             </li>
           </ul>
         </b-col>
@@ -81,34 +84,42 @@
 
 <script>
 import categoriesQuery from "../apollo/queries/category/categories";
-import categoryTrsQuery from "../apollo/queries/category/categories_tr";
-
+import localStorage from "localStorage";
+//import { categoryNameLanguage } from "../plugins/functions";
 export default {
-  //    <span :key="category.id" v-for="category in categoryTrs">{{ category.name }}</span>
-
   data() {
     return {
       categories: [],
-      categoryTrs: [],
-      modalShow: false,
+      modalShow: false
     };
   },
   apollo: {
     categories: {
       prefetch: true,
-      query: categoriesQuery,
-    },
-    categoryTrs: {
-      prefetch: true,
-      query: categoryTrsQuery,
-    },
+      query: categoriesQuery
+    }
   },
   methods: {
     changeLang(lang) {
-      this.$router.push("/");
+      /*localStorage.setItem("fintechProgrammingLanguage", JSON.stringify(lang));
       this.$store.commit("setLanguage", lang);
+      this.$router.push("/"); 
+      this.$router.app.refresh()   */
+      //console.log(categoryNameLanguage(this.categories[0]));
     },
-  },
+    categoryNameLanguage(category) {
+      let lang = this.$store.state.lang;
+      if (lang === "tr") {
+        return category.name_tr;
+      } else if (lang === "cn") {
+        return category.name_cn;
+      } else if (lang === "es") {
+        return category.name_es;
+      } else {
+        return category.name_us;
+      }
+    }
+  }
 };
 </script>
 
