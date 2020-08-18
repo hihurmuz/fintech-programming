@@ -1,5 +1,12 @@
 [
   {
+    "name": "articles-id",
+    "path": "/articles/:id?",
+    "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\articles\\\\_id.vue",
+    "chunkName": "pages/articles/_id",
+    "_name": "_66b28c60"
+  },
+  {
     "name": "category-id",
     "path": "/category/:id?",
     "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\category\\\\_id.vue",
