@@ -7,3 +7,9 @@ export const mutations = {
     state.lang = lang;
   }
 };
+
+export const actions = {
+  nuxtServerInit(store, context) {
+    console.log("vuex worked when the server started...");
+  }
+};

@@ -1,7 +1,7 @@
 import localStorage from "localStorage";
 export default function({ store, redirect, route }) {
   const localLanguage = localStorage.getItem("fintechProgrammingLanguage");
-  if (localLanguage !== "cn") {
+  if (localLanguage) {
     store.commit("setLanguage", localLanguage);
   }
 }
