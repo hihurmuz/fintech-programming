@@ -1,22 +1,12 @@
 <template>
-  <div class="homeContainer">
-    <h1 class="header">FINTECH PROGRAMMING</h1>
-    {{ this.$store.state.lang }}
-  </div>
+  <div></div>
 </template>
 
 <script>
 export default {
+  layout: "home",
   data() {
-    return {
-      articles: [],
-    };
+    return {};
   },
 };
 </script>
-
-<style>
-.homeContainer {
-  padding: 70px 30px 70px 40px;
-}
-</style>

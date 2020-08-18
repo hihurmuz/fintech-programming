@@ -4,8 +4,6 @@
       <b-navbar toggleable="sm" type="light" variant="light">
         <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
 
-        <b-icon-list @click="$modal.show('example')" />
-
         <b-navbar-nav>
           <b-nav-item href="/">
             <b-icon icon="house" font-scale="1"></b-icon>
@@ -16,11 +14,7 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-form class="searchArea">
-            <b-form-input
-              size="sm"
-              class="mr-sm-2 searchInput"
-              placeholder="Search"
-            ></b-form-input>
+            <b-form-input size="sm" class="mr-sm-2 searchInput" placeholder="Search"></b-form-input>
             <b-icon-search @click="$modal.show('example')" id="searchIcon" />
           </b-nav-form>
 
@@ -30,8 +24,7 @@
                 :key="category.id"
                 v-for="category in categories"
                 :to="{ name: 'category-id', params: { id: category.id } }"
-                >{{ categoryNameLanguage(category) }}</b-nav-item
-              >
+              >{{ categoryName(category) }}</b-nav-item>
             </b-row>
           </client-only>
 
@@ -53,31 +46,6 @@
       </b-navbar>
     </div>
 
-    <modal name="example" width="100%" height="100%">
-      <b-row id="modalRow">
-        <b-col class="imageArea"></b-col>
-        <b-col class="pl-5 pt-5">
-          <b-icon
-            id="closeIcon"
-            @click="$modal.hide('example')"
-            icon="x"
-            font-scale="2"
-          ></b-icon>
-
-          <h1 class="header">FINTECH PROGRAMMING</h1>
-          <ul id="categoryList">
-            <li :key="category.id" v-for="category in categories">
-              <nuxt-link
-                id="categoryItem"
-                :to="{ name: 'category-id', params: { id: category.id } }"
-                tag="a"
-                >{{ category.id }}</nuxt-link
-              >
-            </li>
-          </ul>
-        </b-col>
-      </b-row>
-    </modal>
     <Nuxt />
   </div>
 </template>
@@ -85,76 +53,34 @@
 <script>
 import categoriesQuery from "../apollo/queries/category/categories";
 import localStorage from "localStorage";
-//import { categoryNameLanguage } from "../plugins/functions";
+import func from "../plugins/functions";
 export default {
   data() {
     return {
       categories: [],
-      modalShow: false
+      modalShow: false,
     };
   },
   apollo: {
     categories: {
       prefetch: true,
-      query: categoriesQuery
-    }
+      query: categoriesQuery,
+    },
   },
   methods: {
     changeLang(lang) {
-      /*localStorage.setItem("fintechProgrammingLanguage", JSON.stringify(lang));
+      localStorage.setItem("fintechProgrammingLanguage", lang);
+      console.log("change lang :" + lang);
       this.$store.commit("setLanguage", lang);
-      this.$router.push("/"); 
-      this.$router.app.refresh()   */
-      //console.log(categoryNameLanguage(this.categories[0]));
     },
-    categoryNameLanguage(category) {
-      let lang = this.$store.state.lang;
-      if (lang === "tr") {
-        return category.name_tr;
-      } else if (lang === "cn") {
-        return category.name_cn;
-      } else if (lang === "es") {
-        return category.name_es;
-      } else {
-        return category.name_us;
-      }
-    }
-  }
+    categoryName(category) {
+      return func.categoryName(category, this.$store.state.lang);
+    },
+  },
 };
 </script>
 
 <style scoped>
-.imageArea {
-  background-image: url(../static/background.jpg);
-  background-size: 100% 100%;
-}
-#modalRow {
-  height: 100%;
-}
-#closeIcon {
-  position: absolute;
-  color: #999;
-  top: 20px;
-  right: 20px;
-}
-#closeIcon:hover {
-  color: #666;
-  background-color: RGBA(9, 9, 9, 0.1);
-  border-radius: 50%;
-}
-#categoryItem {
-  font-size: 1.5rem;
-  line-height: 2;
-  color: #999;
-}
-#categoryItem:hover {
-  color: #666;
-  text-decoration: none;
-}
-#categoryList {
-  list-style: none;
-  padding-left: 0;
-}
 #searchIcon {
   background-color: RGBA(9, 9, 9, 0.1);
   width: 30px;
