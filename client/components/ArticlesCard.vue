@@ -19,10 +19,7 @@
                 />
               </div>
               <div class="pt-4 pr-2 pb-2 pl-4">
-                <p id="articleCategory" v-if="article.category_tr">
-                  {{ article.category_tr.name }}
-                </p>
-                <p id="articleTitle">{{ article.title }}</p>
+                <p id="articleTitle">{{ articleTitleLanguage(article) }}</p>
               </div>
             </div>
           </nuxt-link>
@@ -34,19 +31,33 @@
 
 <script>
 export default {
-  data: function() {
+  data: function () {
     return {
-      api_url: process.env.strapiBaseUri
+      api_url: process.env.strapiBaseUri,
     };
   },
   props: {
-    articles: Array
+    articles: Array,
   },
   computed: {
     articlesSortByAddedTime() {
       return this.articles.reverse();
-    }
-  }
+    },
+  },
+  methods: {
+    articleTitleLanguage(article) {
+      let lang = this.$store.state.lang;
+      if (lang === "tr") {
+        return article.title_tr;
+      } else if (lang === "cn") {
+        return article.title_cn;
+      } else if (lang === "es") {
+        return article.title_es;
+      } else {
+        return article.title_us;
+      }
+    },
+  },
 };
 </script>
 
@@ -65,10 +76,5 @@ export default {
   position: relative;
   box-sizing: border-box;
   transition: box-shadow 0.1s ease-in-out;
-}
-.articleCardContentImage {
-  max-width: 100%;
-  height: auto;
-  box-sizing: border-box;
 }
 </style>

@@ -25,3 +25,54 @@ a:hover {
   line-height: 1.13636;
   color: #666;
 }
+.articleCardContentImage {
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
+}
+
+.imageArea {
+  background-image: url(../../static/background.jpg);
+  background-size: 100% 100%;
+}
+#modalRow {
+  height: 100%;
+}
+#closeIcon {
+  position: absolute;
+  color: #999;
+  top: 20px;
+  right: 20px;
+}
+#closeIcon:hover {
+  color: #666;
+  background-color: RGBA(9, 9, 9, 0.1);
+  border-radius: 50%;
+}
+#categoryItem {
+  font-size: 1.5rem;
+  line-height: 2;
+  color: #999;
+}
+#categoryItem:hover {
+  color: #666;
+  text-decoration: none;
+}
+#categoryList {
+  list-style: none;
+  padding-left: 0;
+}
+#searchIcon {
+  background-color: RGBA(9, 9, 9, 0.1);
+  width: 30px;
+  height: 30px;
+  padding: 7px;
+  border-radius: 15px;
+}
+#searchIcon:hover {
+  background-color: RGBA(9, 9, 9, 0.2);
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  border-radius: 18px;
+}
