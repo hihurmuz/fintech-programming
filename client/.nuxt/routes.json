@@ -14,6 +14,27 @@
     "_name": "_064a582f"
   },
   {
+    "name": "footer-id",
+    "path": "/footer/:id?",
+    "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\footer\\\\_id.vue",
+    "chunkName": "pages/footer/_id",
+    "_name": "_7587eaf2"
+  },
+  {
+    "name": "maincategory-id",
+    "path": "/maincategory/:id?",
+    "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\maincategory\\\\_id.vue",
+    "chunkName": "pages/maincategory/_id",
+    "_name": "_09111616"
+  },
+  {
+    "name": "menu-id",
+    "path": "/menu/:id?",
+    "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\menu\\\\_id.vue",
+    "chunkName": "pages/menu/_id",
+    "_name": "_0e8ce26e"
+  },
+  {
     "name": "index",
     "path": "/",
     "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\index.vue",
