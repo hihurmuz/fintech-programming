@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "menu_pages",
+  "info": {
+    "name": "MenuPage"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title_us": {
+      "type": "string"
+    },
+    "title_tr": {
+      "type": "string"
+    },
+    "title_cn": {
+      "type": "string"
+    },
+    "title_es": {
+      "type": "string"
+    },
+    "content_us": {
+      "type": "richtext"
+    },
+    "content_tr": {
+      "type": "richtext"
+    },
+    "content_cn": {
+      "type": "richtext"
+    },
+    "content_es": {
+      "type": "richtext"
+    }
+  }
+}

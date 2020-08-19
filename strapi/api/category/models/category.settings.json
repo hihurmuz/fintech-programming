@@ -23,6 +23,21 @@
     },
     "article_groups": {
       "collection": "article-group"
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "main_category": {
+      "via": "categories",
+      "model": "main-category"
     }
   }
 }
