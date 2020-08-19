@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "main_categories",
+  "info": {
+    "name": "MainCategory"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "categories": {
+      "collection": "category",
+      "via": "main_category"
+    },
+    "title_us": {
+      "type": "string"
+    },
+    "title_tr": {
+      "type": "string"
+    },
+    "title_cn": {
+      "type": "string"
+    },
+    "title_es": {
+      "type": "string"
+    }
+  }
+}
