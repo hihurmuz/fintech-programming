@@ -62,19 +62,4 @@ export default {
 </script>
 
 <style>
-.articleContainer {
-  justify-content: space-around;
-  align-content: flex-start;
-}
-.articleCardContainer {
-  border: 1px solid rgba(78, 76, 76, 0.3);
-  margin-bottom: 15px;
-  width: 30%;
-}
-
-.articleCardContent {
-  position: relative;
-  box-sizing: border-box;
-  transition: box-shadow 0.1s ease-in-out;
-}
 </style>

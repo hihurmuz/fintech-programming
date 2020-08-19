@@ -5,26 +5,35 @@
         <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
 
         <b-navbar-nav>
-          <b-nav-item href="/">
-            <b-icon icon="house" font-scale="1"></b-icon>
-          </b-nav-item>
-          <!-- Navbar dropdowns -->
+          <div>
+            <b-dropdown size="sm" variant="link" toggle-class="text-decoration-none">
+              <template v-slot:button-content>&#x2630;</template>
+              <b-dropdown-item href="/">
+                <b-icon-house-door />
+              </b-dropdown-item>
+              <b-dropdown-item
+                v-for="(menu,index) in menuPages"
+                :key="index"
+                :to="{ name: 'menu-id', params: { id: menu.id } }"
+              >{{ titleByLanguage(menu) }}</b-dropdown-item>
+            </b-dropdown>
+          </div>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-form class="searchArea">
             <b-form-input size="sm" class="mr-sm-2 searchInput" placeholder="Search"></b-form-input>
-            <b-icon-search @click="$modal.show('example')" id="searchIcon" />
+            <b-icon-search id="searchIcon" />
           </b-nav-form>
 
           <client-only>
             <b-row class="ml-2 mr-2">
               <b-nav-item
-                :key="category.id"
-                v-for="category in categories"
-                :to="{ name: 'category-id', params: { id: category.id } }"
-              >{{ categoryName(category) }}</b-nav-item>
+                v-for="mainCategory in mainCategories"
+                :key="mainCategory.id"
+                :to="{ name: 'maincategory-id', params: { id: mainCategory.id } }"
+              >{{ titleByLanguage(mainCategory) }}</b-nav-item>
             </b-row>
           </client-only>
 
@@ -51,20 +60,25 @@
 </template>
 
 <script>
-import categoriesQuery from "../apollo/queries/category/categories";
+import mainCategoriesQuery from "../apollo/queries/main-category/main-categories";
+import menuPagesQuery from "../apollo/queries/menu/menu-pages";
 import localStorage from "localStorage";
 import func from "../plugins/functions";
 export default {
   data() {
     return {
-      categories: [],
-      modalShow: false,
+      mainCategories: [],
+      menuPages: [],
     };
   },
   apollo: {
-    categories: {
+    mainCategories: {
       prefetch: true,
-      query: categoriesQuery,
+      query: mainCategoriesQuery,
+    },
+    menuPages: {
+      prefetch: true,
+      query: menuPagesQuery,
     },
   },
   methods: {
@@ -73,8 +87,8 @@ export default {
       console.log("change lang :" + lang);
       this.$store.commit("setLanguage", lang);
     },
-    categoryName(category) {
-      return func.categoryName(category, this.$store.state.lang);
+    titleByLanguage(value) {
+      return func.mainCategoryName(value, this.$store.state.lang);
     },
   },
 };

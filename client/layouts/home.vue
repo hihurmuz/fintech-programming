@@ -6,10 +6,10 @@
         <b-col class="pl-5 pt-5">
           <h1 class="header">FINTECH PROGRAMMING</h1>
           <ul id="categoryList">
-            <li :key="category.id" v-for="category in categories" @click="hideModal">
+            <li :key="category.id" v-for="category in mainCategories" @click="hideModal">
               <nuxt-link
                 id="categoryItem"
-                :to="{ name: 'category-id', params: { id: category.id } }"
+                :to="{ name: 'maincategory-id', params: { id: category.id } }"
                 tag="a"
               >{{ categoryName(category)}}</nuxt-link>
             </li>
@@ -22,18 +22,18 @@
 </template>
 
 <script>
-import categoriesQuery from "../apollo/queries/category/categories";
+import mainCategoriesQuery from "../apollo/queries/main-category/main-categories";
 import func from "../plugins/functions";
 export default {
   data() {
     return {
-      categories: [],
+      mainCategories: [],
     };
   },
   apollo: {
-    categories: {
+    mainCategories: {
       prefetch: true,
-      query: categoriesQuery,
+      query: mainCategoriesQuery,
     },
   },
   mounted() {
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     categoryName(category) {
-      return func.categoryName(category, this.$store.state.lang);
+      return func.mainCategoryName(category, this.$store.state.lang);
     },
     hideModal() {
       this.$modal.hide("indexModal");
