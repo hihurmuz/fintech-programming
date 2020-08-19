@@ -1,0 +1,13 @@
+query MenuPage($id: ID!) {
+  menuPage(id: $id) {
+    id
+    title_us
+    title_tr
+    title_cn
+    title_es
+    content_us
+    content_tr
+    content_cn
+    content_es
+  }
+}
