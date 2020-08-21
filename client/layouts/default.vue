@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="defaultLayoutt">
     <div>
       <b-navbar toggleable="sm" type="light" variant="light">
         <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
 
         <b-navbar-nav>
           <div>
-            <b-dropdown size="sm" variant="link" toggle-class="text-decoration-none">
+            <b-dropdown size="sm" variant="light" toggle-class="text-decoration-none">
               <template v-slot:button-content>&#x2630;</template>
               <b-dropdown-item href="/">
                 <b-icon-house-door />
@@ -55,7 +55,9 @@
       </b-navbar>
     </div>
 
-    <Nuxt />
+    <Nuxt :style="{ minHeight: '80vh'}" />
+
+    <TheFooter />
   </div>
 </template>
 
@@ -64,12 +66,16 @@ import mainCategoriesQuery from "../apollo/queries/main-category/main-categories
 import menuPagesQuery from "../apollo/queries/menu/menu-pages";
 import localStorage from "localStorage";
 import func from "../plugins/functions";
+import TheFooter from "../components/TheFooter";
 export default {
   data() {
     return {
       mainCategories: [],
       menuPages: [],
     };
+  },
+  components: {
+    TheFooter,
   },
   apollo: {
     mainCategories: {
