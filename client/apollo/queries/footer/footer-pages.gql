@@ -1,0 +1,9 @@
+query FooterPages {
+  footerPages {
+    id
+    title_us
+    title_tr
+    title_cn
+    title_es
+  }
+}
