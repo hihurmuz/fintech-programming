@@ -30,7 +30,7 @@ export default {
     },
   },
   computed: {
-    contentByLanguage: function () {
+    contentByLanguage() {
       let menu = this.menuPage;
       if (menu.id) {
         let lang = this.$store.state.lang;
@@ -51,8 +51,3 @@ export default {
 };
 </script>
 
-<style>
-.pageContent {
-  text-align: justify;
-}
-</style>

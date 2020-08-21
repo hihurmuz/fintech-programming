@@ -1,22 +1,24 @@
 <template>
   <div class="articleArea">
-    <h1 class="mt-3 mb-3">{{ titles(articleGroup) }}</h1>
-    <div class="iamgeContainer">
-      <img class="articleCardContentImages" :src="imageUrl" :alt="imageUrl" />
-    </div>
-    <div class="mt-3" role="tablist">
-      <b-card no-body class="mb-1" v-for="(item, index) in articleGroup.articles" :key="index">
-        <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block @click="openn(index)" variant="light">{{titles(item)}}</b-button>
-        </b-card-header>
-        <b-collapse :id="index + 1" accordion="my-accordion" role="tabpanel">
-          <b-card-body>
-            <div class="markdon" v-if="articleContent !== ''" v-html="$md.render(articleContent)"></div>
-          </b-card-body>
-        </b-collapse>
-      </b-card>
-    </div>
-    <p>{{ moment(articleGroup.updated_at).format("MMM Do YY") }}</p>
+    <b-row align-h="center">
+      <b-col cols="8">
+        <h1 class="mt-3 mb-3">{{ articleGroup.title_us }}</h1>
+        <div class="iamgeContainer">
+          <img class="articleCardContentImages" :src="imageUrl" :alt="imageUrl" />
+        </div>
+        <div class="markdon" v-if="articleContent !== ''" v-html="$md.render(articleContent)"></div>
+        <p>{{ moment(articleGroup.updated_at).format("MMM Do YY") }}</p>
+      </b-col>
+      <b-col class="articleList mt-3">
+        <b-button
+          block
+          v-for="(item,index) in articleGroup.articles"
+          :key="index"
+          variant="outline-secondary"
+          @click="articleIndex = index"
+        >{{titles(item)}}</b-button>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -70,10 +72,6 @@ export default {
     },
   },
   methods: {
-    openn(i) {
-      this.articleIndex = i;
-      this.$root.$emit("bv::toggle::collapse", i + 1);
-    },
     titles(value) {
       if (this.articleGroup.id) {
         let lang = this.$store.state.lang;
@@ -98,7 +96,7 @@ export default {
 
 <style>
 .articleArea {
-  margin: 10px 10%;
+  margin: 10px 15%;
 }
 .markdon {
   text-align: justify;

@@ -3,42 +3,36 @@
     "name": "articles-id",
     "path": "/articles/:id?",
     "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\articles\\\\_id.vue",
-    "chunkName": "pages/articles/_id",
-    "_name": "_66b28c60"
+    "chunkName": "pages/articles/_id"
   },
   {
     "name": "category-id",
     "path": "/category/:id?",
     "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\category\\\\_id.vue",
-    "chunkName": "pages/category/_id",
-    "_name": "_064a582f"
+    "chunkName": "pages/category/_id"
   },
   {
     "name": "footer-id",
     "path": "/footer/:id?",
     "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\footer\\\\_id.vue",
-    "chunkName": "pages/footer/_id",
-    "_name": "_7587eaf2"
+    "chunkName": "pages/footer/_id"
   },
   {
     "name": "maincategory-id",
     "path": "/maincategory/:id?",
     "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\maincategory\\\\_id.vue",
-    "chunkName": "pages/maincategory/_id",
-    "_name": "_09111616"
+    "chunkName": "pages/maincategory/_id"
   },
   {
     "name": "menu-id",
     "path": "/menu/:id?",
     "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\menu\\\\_id.vue",
-    "chunkName": "pages/menu/_id",
-    "_name": "_0e8ce26e"
+    "chunkName": "pages/menu/_id"
   },
   {
     "name": "index",
     "path": "/",
     "component": "C:\\\\Users\\\\halil\\\\OneDrive\\\\Documents\\\\fintech-programming\\\\client\\\\pages\\\\index.vue",
-    "chunkName": "pages/index",
-    "_name": "_0e868905"
+    "chunkName": "pages/index"
   }
 ]
